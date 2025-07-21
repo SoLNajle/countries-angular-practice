@@ -1,0 +1,49 @@
+<div class="country-container">
+  <h1 class="country-title">Countries I've visited</h1>
+  <form class="inventory-form" [formGroup]="countryForm">
+    <mat-form-field>
+      <mat-label>Country</mat-label>
+      <mat-select formControlName="country" required="">
+        @for (country of countries; track country) {
+          <mat-option [value]="country.code">{{ country.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-label class="country-stay-label">Stayed Long?</mat-label>
+    <mat-radio-group
+      class="country-stay-duration"
+      aria-label="Stayed Long?"
+      formControlName="stayDuration"
+      required=""
+    >
+      @for (stay of stayDurations; track stay.value) {
+        <mat-radio-button [value]="stay.value">{{
+          stay.description
+        }}</mat-radio-button>
+      }
+    </mat-radio-group>
+    <mat-label class="country-amount-label">Multiple Visits</mat-label>
+    <mat-radio-group
+      class="country-amount-duration"
+      aria-label="Multiple Visits"
+      formControlName="visitAmount"
+      required=""
+    >
+      @for (visit of visitAmounts; track visit.value) {
+        <mat-radio-button [value]="visit.value">{{
+          visit.description
+        }}</mat-radio-button>
+      }
+    </mat-radio-group>
+    <div class="country-button">
+      <button
+        matButton="filled"
+        type="submit"
+        (click)="addCountry()"
+        [disabled]="countryForm.invalid"
+      >
+        Add Country
+      </button>
+    </div>
+  </form>
+</div>

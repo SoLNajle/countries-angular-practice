@@ -1,17 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject, signal, } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoginService } from '../../services/login'; import { Router } from '@angular/router';
-;
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { LoginService } from '../../services/login';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './login.html',
-  styleUrl: './login.scss'
+  styleUrl: './login.scss',
 })
 export class Login {
   private loginService = inject(LoginService);
@@ -19,7 +35,10 @@ export class Login {
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(4)])
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+    ]),
   });
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -28,21 +47,17 @@ export class Login {
   }
 
   loginUser() {
-    console.log('Login User', this.loginForm.value);
-    if (this.loginForm.invalid) {
-      console.log('Form is invalid');
-      return;
-    }
-    const { email, password } = this.loginForm.value as { email: string, password: string };
-    console.log('Email:', email, 'Password:', password);
-    this.loginService.authenticate(email, password)
-      .then(isAuthenticated => {
-        if (isAuthenticated) {
-          console.log('Login successful');
-          this.router.navigate(['/form-inventory'])
-        } else {
-          console.log('Login failed');
-        }
-      });
+    const { email, password } = this.loginForm.value as {
+      email: string;
+      password: string;
+    };
+    this.loginService.authenticate(email, password).then((isAuthenticated) => {
+      if (isAuthenticated) {
+        console.log('Login successful');
+        this.router.navigate(['/form-inventory']);
+      } else {
+        console.log('Login failed');
+      }
+    });
   }
 }

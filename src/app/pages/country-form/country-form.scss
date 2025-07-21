@@ -1,0 +1,44 @@
+.country-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+.inventory-form {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.country-stay-duration, .country-amount-duration {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.country-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-mdc-radio-button ~ .mat-mdc-radio-button {
+  margin-left: 16px;
+}
+.country-stay-label, .country-amount-label {
+    font-size: medium;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.country-button{ 
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}

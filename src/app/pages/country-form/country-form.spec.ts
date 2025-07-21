@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormInventory } from './form-inventory';
+import { CountryForm } from '.country-form';
 
-describe('FormInventory', () => {
-  let component: FormInventory;
-  let fixture: ComponentFixture<FormInventory>;
+describe('CountryForm', () => {
+  let component: CountryForm;
+  let fixture: ComponentFixture<CountryForm>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormInventory]
-    })
-    .compileComponents();
+      imports: [CountryForm],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(FormInventory);
+    fixture = TestBed.createComponent(CountryForm);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
