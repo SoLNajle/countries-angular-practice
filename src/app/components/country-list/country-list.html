@@ -5,19 +5,14 @@
       <th mat-header-cell *matHeaderCellDef>Country</th>
       <td mat-cell *matCellDef="let country">{{ country.countryCode }}</td>
     </ng-container>
-
-    <!-- Name Column -->
     <ng-container matColumnDef="stayDuration">
       <th mat-header-cell *matHeaderCellDef>Stay Duration</th>
       <td mat-cell *matCellDef="let country">{{ country.stayDuration }}</td>
     </ng-container>
-
-    <!-- Weight Column -->
     <ng-container matColumnDef="visitAmount">
       <th mat-header-cell *matHeaderCellDef>Visit Amount</th>
       <td mat-cell *matCellDef="let country">{{ country.visitAmount }}</td>
     </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
