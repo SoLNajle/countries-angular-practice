@@ -1,9 +1,9 @@
-<div class="country-container">
+<div class="country-form-container">
   <h1 class="country-title">Countries I've visited</h1>
   <form class="inventory-form" [formGroup]="countryForm">
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <mat-select formControlName="country" required="">
+      <mat-select formControlName="countryCode" required="">
         @for (country of countries; track country) {
           <mat-option [value]="country.code">{{ country.name }}</mat-option>
         }
@@ -47,3 +47,4 @@
     </div>
   </form>
 </div>
+<app-country-list [countries]="VisitedCountries()"></app-country-list>

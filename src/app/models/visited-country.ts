@@ -1,5 +1,6 @@
 export interface VisitedCountry {
-  country: string;
+  id: number;
+  countryCode: string;
   stayDuration: string;
   visitAmount: string;
 }

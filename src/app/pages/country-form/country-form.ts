@@ -16,6 +16,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { VISIT_AMOUNTS } from '../../data/visit-amounts.data';
 import { STAY_DURATIONS } from '../../data/stay-durations.data';
 import { VisitedCountry } from '../../models/visited-country';
+import { CountryList } from '../../components/country-list/country-list';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-country-form',
@@ -27,6 +29,7 @@ import { VisitedCountry } from '../../models/visited-country';
     ReactiveFormsModule,
     MatRadioModule,
     MatButtonModule,
+    CountryList,
   ],
   templateUrl: './country-form.html',
   styleUrl: './country-form.scss',
@@ -35,7 +38,6 @@ export class CountryFormComponent {
   private countryService = inject(CountryService);
   visitAmounts = VISIT_AMOUNTS;
   stayDurations = STAY_DURATIONS;
-  VisitedCountries: VisitedCountry[] = [];
   countries: Country[] = [];
 
   constructor() {
@@ -50,20 +52,24 @@ export class CountryFormComponent {
   }
 
   countryForm = new FormGroup({
-    country: new FormControl(''),
+    countryCode: new FormControl(''),
     stayDuration: new FormControl(''),
     visitAmount: new FormControl(''),
   });
 
+  VisitedCountries = signal<VisitedCountry[]>([]);
+
   addCountry() {
     if (this.countryForm.valid) {
+      const newId = this.VisitedCountries().length + 1;
       const newCountry: VisitedCountry = {
-        country: this.countryForm.value.country as string,
+        id: newId,
+        countryCode: this.countryForm.value.countryCode as string,
         stayDuration: this.countryForm.value.stayDuration as string,
         visitAmount: this.countryForm.value.visitAmount as string,
       };
-      this.VisitedCountries.push(newCountry);
-      console.log('New country added:', this.VisitedCountries);
+      this.VisitedCountries.update((countries) => [...countries, newCountry]);
+      console.log('New country added:', this.VisitedCountries());
       this.countryForm.reset(); // Reset the form after submission
     } else {
       console.error('Form is invalid');
