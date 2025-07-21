@@ -6,8 +6,7 @@ import { User } from '../pages/login/interfaces/user';
 })
 export class LoginService {
   private url = 'http://localhost:3000/users';
-  private isAuthenticated: boolean = false
-  constructor() {}
+  private isAuthenticated = false
 
   authenticate(email: string, password: string): Promise<boolean> {
     return this.getUserByEmail(email).then(user => {

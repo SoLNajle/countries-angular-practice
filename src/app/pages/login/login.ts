@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoginService } from '../../services/login';import { Router } from '@angular/router';
+import { LoginService } from '../../services/login'; import { Router } from '@angular/router';
 ;
 @Component({
   selector: 'app-login',
@@ -33,16 +33,13 @@ export class Login {
       console.log('Form is invalid');
       return;
     }
-    const {email, password} =this.loginForm.value as {email: string, password: string};
+    const { email, password } = this.loginForm.value as { email: string, password: string };
     console.log('Email:', email, 'Password:', password);
     this.loginService.authenticate(email, password)
       .then(isAuthenticated => {
         if (isAuthenticated) {
           console.log('Login successful');
-          //go to form-inventory page using angular redirect
           this.router.navigate(['/form-inventory'])
-
-
         } else {
           console.log('Login failed');
         }

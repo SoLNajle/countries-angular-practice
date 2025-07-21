@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
-import { Title } from '@angular/platform-browser';
 import { FormInventory } from './pages/form-inventory/form-inventory';
 import { authGuard } from './auth-guard'; 
 import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized';
