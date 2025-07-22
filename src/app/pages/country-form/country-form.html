@@ -3,7 +3,11 @@
   <form class="inventory-form" [formGroup]="countryForm">
     <mat-form-field>
       <mat-label>Country</mat-label>
-      <mat-select formControlName="countryCode" required="">
+      <mat-select
+        formControlName="countryCode"
+        required=""
+        (selectionChange)="duplicatedCountry = false"
+      >
         @for (country of countries; track country) {
           <mat-option [value]="country.code">{{ country.name }}</mat-option>
         }
@@ -59,6 +63,12 @@
           Add Country
         </button>
       </div>
+    </div>
+    <div class="error-message">
+      <p class="error-text" [hidden]="!duplicatedCountry">
+        This country code already exists! Change it or edit an already existing
+        country.
+      </p>
     </div>
   </form>
 </div>

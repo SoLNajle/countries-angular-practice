@@ -62,22 +62,26 @@ export class CountryFormComponent implements OnInit {
   });
 
   VisitedCountries = signal<VisitedCountry[] | []>([]);
-
+  duplicatedCountry = false;
   addCountry() {
-    if (this.countryForm.valid) {
-      const newId = this.VisitedCountries().length + 1;
-      const newCountry: VisitedCountry = {
-        id: newId,
-        countryCode: this.countryForm.value.countryCode as string,
-        stayDuration: this.countryForm.value.stayDuration as string,
-        visitAmount: this.countryForm.value.visitAmount as string,
-      };
-      this.VisitedCountries.update((countries) => [...countries, newCountry]);
-      console.log('New country added:', this.VisitedCountries());
-      this.countryForm.reset();
-    } else {
-      console.error('Form is invalid');
+    if (
+      this.isDuplicatedCountryCode(this.countryForm.value.countryCode as string)
+    ) {
+      this.duplicatedCountry = true;
+      return;
     }
+
+    const newId = this.VisitedCountries().length + 1;
+    const newCountry: VisitedCountry = {
+      id: newId,
+      countryCode: this.countryForm.value.countryCode as string,
+      stayDuration: this.countryForm.value.stayDuration as string,
+      visitAmount: this.countryForm.value.visitAmount as string,
+    };
+    this.VisitedCountries.update((countries) => [...countries, newCountry]);
+    console.log('New country added:', this.VisitedCountries());
+    this.countryForm.reset();
+
     this.countryService.saveToLocalStorage(this.VisitedCountries());
   }
 
@@ -123,24 +127,34 @@ export class CountryFormComponent implements OnInit {
   }
 
   updateCountry(): void {
-    if (this.countryForm.valid) {
-      const updatedCountry: VisitedCountry = {
-        id: this.countryIdToEdit!,
-        countryCode: this.countryForm.value.countryCode as string,
-        stayDuration: this.countryForm.value.stayDuration as string,
-        visitAmount: this.countryForm.value.visitAmount as string,
-      };
-      this.VisitedCountries.update((countries) =>
-        countries.map((country) =>
-          country.id === this.countryIdToEdit ? updatedCountry : country,
-        ),
-      );
-      this.countryService.saveToLocalStorage(this.VisitedCountries());
-      console.log('Country updated:', updatedCountry);
-      this.countryForm.reset();
-      this.countryFormEditing = false;
-    } else {
-      console.error('Form is invalid');
+    if (
+      this.isDuplicatedCountryCode(this.countryForm.value.countryCode as string)
+    ) {
+      this.duplicatedCountry = true;
+      return;
     }
+    const updatedCountry: VisitedCountry = {
+      id: this.countryIdToEdit!,
+      countryCode: this.countryForm.value.countryCode as string,
+      stayDuration: this.countryForm.value.stayDuration as string,
+      visitAmount: this.countryForm.value.visitAmount as string,
+    };
+    this.VisitedCountries.update((countries) =>
+      countries.map((country) =>
+        country.id === this.countryIdToEdit ? updatedCountry : country,
+      ),
+    );
+    this.countryService.saveToLocalStorage(this.VisitedCountries());
+    console.log('Country updated:', updatedCountry);
+    this.countryForm.reset();
+    this.countryFormEditing = false;
+  }
+
+  isDuplicatedCountryCode(countryCode: string): boolean {
+    return this.VisitedCountries().some(
+      (country) =>
+        country.countryCode === countryCode &&
+        country.id !== this.countryIdToEdit,
+    );
   }
 }

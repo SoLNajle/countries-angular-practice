@@ -8,6 +8,6 @@ export const authGuard: CanActivateFn = () => {
   if (loginService.isAuthenticatedUser()) {
     return true;
   }
-  //return true; //  ONLY FOR TESTING PURPOSES
+  //turn true; //  ONLY FOR TESTING PURPOSES
   return router.createUrlTree(['/not-authorized']);
 };
