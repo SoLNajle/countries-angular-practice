@@ -40,6 +40,8 @@ export class CountryFormComponent {
   visitAmounts = VISIT_AMOUNTS;
   stayDurations = STAY_DURATIONS;
   countries: Country[] = [];
+  countryFormEditing = false;
+  countryIdToEdit: number | null = null;
 
   constructor() {
     this.countryService
@@ -80,6 +82,7 @@ export class CountryFormComponent {
   visitedCountriesDescription = computed(() => {
     return this.VisitedCountries().map((country) => ({
       ...country,
+      id: country.id,
       countryName:
         this.countries.find((c) => c.code === country.countryCode)?.name ||
         'Unknown',
@@ -93,4 +96,47 @@ export class CountryFormComponent {
       ),
     }));
   });
+  deleteCountry(countryId: number): void {
+    console.log('Deleting country with ID:', countryId);
+    this.VisitedCountries.update((countries) =>
+      countries.filter((country) => country.id !== countryId),
+    );
+  }
+
+  editCountry(countryId: number): void {
+    this.countryFormEditing = true;
+    this.countryIdToEdit = countryId;
+    const countryToEdit = this.VisitedCountries().find(
+      (country) => country.id === countryId,
+    );
+    if (countryToEdit) {
+      this.countryForm.patchValue({
+        countryCode: countryToEdit.countryCode,
+        stayDuration: countryToEdit.stayDuration,
+        visitAmount: countryToEdit.visitAmount,
+      });
+    }
+    console.log('Editing country with ID:', countryId);
+  }
+
+  updateCountry(): void {
+    if (this.countryForm.valid) {
+      const updatedCountry: VisitedCountry = {
+        id: this.countryIdToEdit!,
+        countryCode: this.countryForm.value.countryCode as string,
+        stayDuration: this.countryForm.value.stayDuration as string,
+        visitAmount: this.countryForm.value.visitAmount as string,
+      };
+      this.VisitedCountries.update((countries) =>
+        countries.map((country) =>
+          country.id === this.countryIdToEdit ? updatedCountry : country,
+        ),
+      );
+      console.log('Country updated:', updatedCountry);
+      this.countryForm.reset();
+      this.countryFormEditing = false;
+    } else {
+      console.error('Form is invalid');
+    }
+  }
 }

@@ -35,18 +35,37 @@
         }}</mat-radio-button>
       }
     </mat-radio-group>
-    <div class="country-button">
-      <button
-        matButton="filled"
-        type="submit"
-        (click)="addCountry()"
-        [disabled]="countryForm.invalid"
-      >
-        Add Country
-      </button>
+    <div class="country-buttons">
+      <div>
+        <button
+          matButton="filled"
+          class="country-update-button"
+          type="submit"
+          (click)="updateCountry()"
+          [hidden]="!countryFormEditing"
+        >
+          Update Country
+        </button>
+      </div>
+      <div>
+        <button
+          matButton="filled"
+          class="country-add-button"
+          type="submit"
+          (click)="addCountry()"
+          [hidden]="countryFormEditing"
+          [disabled]="countryForm.invalid"
+        >
+          Add Country
+        </button>
+      </div>
     </div>
   </form>
 </div>
 <app-country-list
+  class="country-list-container"
   [countries]="visitedCountriesDescription()"
+  (countryDeleted)="deleteCountry($event)"
+  (countryEdited)="editCountry($event)"
+  [countryFormEditing]="countryFormEditing"
 ></app-country-list>

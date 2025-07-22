@@ -3,7 +3,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70vh;
+    height: 40vh;
+}
+
+.country-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 600px;
+    height: 40vh;
 }
 
 .inventory-form {
@@ -12,33 +21,45 @@
     flex-direction: column;
 }
 
-.country-stay-duration, .country-amount-duration {
+.country-stay-duration,
+.country-amount-duration {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }
+
 .country-title {
     text-align: center;
     margin-bottom: 50px;
 }
 
 .mat-form-field {
-  width: 100%;
+    width: 100%;
 }
 
-.mat-mdc-radio-button ~ .mat-mdc-radio-button {
-  margin-left: 16px;
+.mat-mdc-radio-button~.mat-mdc-radio-button {
+    margin-left: 16px;
 }
-.country-stay-label, .country-amount-label {
+
+.country-stay-label,
+.country-amount-label {
     font-size: medium;
     font-weight: bold;
     padding-bottom: 10px;
 }
 
-.country-button{ 
+.country-add-button {
     display: flex;
     flex-direction: row;
     justify-content: right;
+
+}
+
+.country-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
