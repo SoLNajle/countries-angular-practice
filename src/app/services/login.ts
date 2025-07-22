@@ -45,4 +45,9 @@ export class LoginService {
   isAuthenticatedUser(): boolean {
     return this.isAuthenticated;
   }
+
+  logout(): void {
+    this.setIsAuthenticated(false);
+    console.log('User logged out');
+  }
 }

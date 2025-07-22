@@ -1,1 +1,12 @@
-<p>not-authorized works!</p>
+<div class="not-authorized-container">
+  <h1>Not Authorized</h1>
+  <p>You do not have permission to access this page.</p>
+  <p>Please log in with the correct credentials.</p>
+  <div class="login-button">
+    <button matButton="filled" [routerLink]="['/login']">Go to Login</button>
+  </div>
+  <p>
+    Credentials <br />email --> {{ "a@a.com" }} <br />
+    pwd: 1234
+  </p>
+</div>

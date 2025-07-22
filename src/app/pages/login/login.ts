@@ -54,7 +54,7 @@ export class Login {
     this.loginService.authenticate(email, password).then((isAuthenticated) => {
       if (isAuthenticated) {
         console.log('Login successful');
-        this.router.navigate(['/form-inventory']);
+        this.router.navigate(['/country-form']);
       } else {
         console.log('Login failed');
       }

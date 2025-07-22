@@ -5,7 +5,7 @@ import { authGuard } from './auth-guard';
 import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized';
 
 export const routes: Routes = [
-  { path: '', component: Login, title: 'Login' },
+  { path: 'login', component: Login, title: 'Login' },
   {
     path: 'country-form',
     component: CountryFormComponent,

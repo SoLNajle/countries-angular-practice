@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Country } from '../models/country';
+import { VisitedCountry } from '../models/visited-country';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +31,14 @@ export class CountryService {
         console.error('Error fetching country by code:', error);
         throw error;
       });
+  }
+
+  saveToLocalStorage(countries: VisitedCountry[]): void {
+    localStorage.setItem('visitedCountries', JSON.stringify(countries));
+  }
+
+  getFromLocalStorage(): VisitedCountry[] {
+    const data = localStorage.getItem('visitedCountries');
+    return data ? JSON.parse(data) : [];
   }
 }

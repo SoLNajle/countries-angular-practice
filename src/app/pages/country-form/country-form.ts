@@ -17,8 +17,9 @@ import { VISIT_AMOUNTS } from '../../data/visit-amounts.data';
 import { STAY_DURATIONS } from '../../data/stay-durations.data';
 import { VisitedCountry } from '../../models/visited-country';
 import { CountryList } from '../../components/country-list/country-list';
-import { signal } from '@angular/core';
+import { signal, OnInit } from '@angular/core';
 import { getDescription } from '../../utils/option-description.util';
+import { Logout } from '../../components/logout/logout';
 
 @Component({
   selector: 'app-country-form',
@@ -31,27 +32,27 @@ import { getDescription } from '../../utils/option-description.util';
     MatRadioModule,
     MatButtonModule,
     CountryList,
+    Logout,
   ],
   templateUrl: './country-form.html',
   styleUrl: './country-form.scss',
 })
-export class CountryFormComponent {
+export class CountryFormComponent implements OnInit {
   private countryService = inject(CountryService);
   visitAmounts = VISIT_AMOUNTS;
   stayDurations = STAY_DURATIONS;
   countries: Country[] = [];
   countryFormEditing = false;
   countryIdToEdit: number | null = null;
-
-  constructor() {
-    this.countryService
-      .getAllCountries()
-      .then((countries) => {
-        this.countries = countries;
-      })
-      .catch((error) => {
-        console.error('Error fetching countries:', error);
-      });
+  async ngOnInit() {
+    try {
+      this.countries = await this.countryService.getAllCountries();
+      this.VisitedCountries.set(
+        this.countryService.getFromLocalStorage() ?? [],
+      );
+    } catch (error) {
+      console.error('Error initializing data:', error);
+    }
   }
 
   countryForm = new FormGroup({
@@ -60,7 +61,7 @@ export class CountryFormComponent {
     visitAmount: new FormControl(''),
   });
 
-  VisitedCountries = signal<VisitedCountry[]>([]);
+  VisitedCountries = signal<VisitedCountry[] | []>([]);
 
   addCountry() {
     if (this.countryForm.valid) {
@@ -77,6 +78,7 @@ export class CountryFormComponent {
     } else {
       console.error('Form is invalid');
     }
+    this.countryService.saveToLocalStorage(this.VisitedCountries());
   }
 
   visitedCountriesDescription = computed(() => {
@@ -101,6 +103,7 @@ export class CountryFormComponent {
     this.VisitedCountries.update((countries) =>
       countries.filter((country) => country.id !== countryId),
     );
+    this.countryService.saveToLocalStorage(this.VisitedCountries());
   }
 
   editCountry(countryId: number): void {
@@ -132,6 +135,7 @@ export class CountryFormComponent {
           country.id === this.countryIdToEdit ? updatedCountry : country,
         ),
       );
+      this.countryService.saveToLocalStorage(this.VisitedCountries());
       console.log('Country updated:', updatedCountry);
       this.countryForm.reset();
       this.countryFormEditing = false;

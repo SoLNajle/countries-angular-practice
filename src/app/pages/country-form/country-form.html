@@ -22,7 +22,7 @@
         }}</mat-radio-button>
       }
     </mat-radio-group>
-    <mat-label class="country-amount-label">Multiple Visits</mat-label>
+    <mat-label class="country-amount-label">Multiple Visits?</mat-label>
     <mat-radio-group
       class="country-amount-duration"
       aria-label="Multiple Visits"
@@ -69,3 +69,6 @@
   (countryEdited)="editCountry($event)"
   [countryFormEditing]="countryFormEditing"
 ></app-country-list>
+<div class="navigation-footer">
+  <app-logout></app-logout>
+</div>
