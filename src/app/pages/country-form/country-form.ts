@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -18,6 +18,7 @@ import { STAY_DURATIONS } from '../../data/stay-durations.data';
 import { VisitedCountry } from '../../models/visited-country';
 import { CountryList } from '../../components/country-list/country-list';
 import { signal } from '@angular/core';
+import { getDescription } from '../../utils/option-description.util';
 
 @Component({
   selector: 'app-country-form',
@@ -70,9 +71,26 @@ export class CountryFormComponent {
       };
       this.VisitedCountries.update((countries) => [...countries, newCountry]);
       console.log('New country added:', this.VisitedCountries());
-      this.countryForm.reset(); // Reset the form after submission
+      this.countryForm.reset();
     } else {
       console.error('Form is invalid');
     }
   }
+
+  visitedCountriesDescription = computed(() => {
+    return this.VisitedCountries().map((country) => ({
+      ...country,
+      countryName:
+        this.countries.find((c) => c.code === country.countryCode)?.name ||
+        'Unknown',
+      stayDurationDescription: getDescription(
+        this.stayDurations,
+        country.stayDuration,
+      ),
+      visitAmountDescription: getDescription(
+        this.visitAmounts,
+        country.visitAmount,
+      ),
+    }));
+  });
 }
