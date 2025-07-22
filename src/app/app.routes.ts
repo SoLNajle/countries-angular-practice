@@ -3,6 +3,7 @@ import { Login } from './pages/login/login';
 import { CountryFormComponent } from './pages/country-form/country-form';
 import { authGuard } from './auth-guard';
 import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized';
+import { CountryMap } from './pages/country-map/country-map';
 
 export const routes: Routes = [
   { path: 'login', component: Login, title: 'Login' },
@@ -16,5 +17,11 @@ export const routes: Routes = [
     path: 'not-authorized',
     component: NotAuthorizedComponent,
     title: 'Not Authorized',
+  },
+  {
+    path: 'map',
+    component: CountryMap,
+    title: 'Country Map',
+    canActivate: [authGuard], // Ensure AuthGuard is imported and configured
   },
 ];
