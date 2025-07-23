@@ -2,7 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { MapCountryData } from '../models/map-country-data';
 import { MapCapitalData } from '../models/map-capital-data';
 import { CountryService } from './country';
-import { STAY_DURATION_VALUE_MAP } from '../data/stay-duration-value-map';
+import {
+  STAY_DURATION_VALUE_DESCRIPTION_MAP,
+  STAY_DURATION_VALUE_MAP,
+} from '../data/stay-duration-value-map';
 import { VisitedCountry } from '../models/visited-country';
 import { VISIT_AMOUNTS_VALUE_MAP } from '../data/visit-amounts-value-map';
 @Injectable({
@@ -27,7 +30,7 @@ export class MapService {
           if (params.seriesType === 'effectScatter') {
             return this.getTooltipForCapital(params.value[2]);
           }
-          return `${params.name}: ${params.value || 0}`;
+          return this.getTooltipForCountry(params.name, params.value);
         },
       },
       visualMap: {
@@ -36,12 +39,36 @@ export class MapService {
         left: 'right',
         top: 'bottom',
         pieces: [
-          { value: 5, label: 'Lived', color: '#a50026' },
-          { value: 4, label: 'Less than 6 Months', color: '#dd6773' },
-          { value: 3, label: 'Less than a Month', color: '#f3989e' },
-          { value: 2, label: 'Less than a Week', color: '#fbc9cb' },
-          { value: 1, label: 'Airport', color: '#2ecc40' },
-          { value: 0, label: 'Not Visited', color: '#eeeeee' },
+          {
+            value: 5,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[5],
+            color: '#a900a9',
+          }, // deep purple starting point
+          {
+            value: 4,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[4],
+            color: '#c65caa',
+          }, // lighter purple-pink
+          {
+            value: 3,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[3],
+            color: '#e492b9',
+          }, // pastel pink-purple
+          {
+            value: 2,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[2],
+            color: '#f6c6dc',
+          }, // light blush tone
+          {
+            value: 1,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[1],
+            color: '#bbc1bcff',
+          },
+          {
+            value: 0,
+            label: STAY_DURATION_VALUE_DESCRIPTION_MAP[0],
+            color: '#eeeeee',
+          },
         ],
         textStyle: {
           color: '#333',
@@ -158,5 +185,9 @@ export class MapService {
       return 'lots of visits';
     }
     return `${param_value} visits`;
+  }
+
+  getTooltipForCountry(param_name: string, param_value: number): string {
+    return `${param_name}: ${STAY_DURATION_VALUE_DESCRIPTION_MAP[param_value] || 'not visited'}`;
   }
 }
