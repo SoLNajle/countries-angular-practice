@@ -33,6 +33,14 @@ export class Login {
   private loginService = inject(LoginService);
   private router = inject(Router);
 
+  isAuthenticated = this.loginService.isAuthenticatedSignal();
+  constructor() {
+    if (this.loginService.isAuthenticatedSignal()) {
+      console.log('User is already authenticated, redirecting to country-form');
+      this.router.navigate(['/country-form']);
+    }
+  }
+
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [

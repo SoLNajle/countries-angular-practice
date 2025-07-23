@@ -1,0 +1,38 @@
+
+.menu-toolbar {
+  background-color: #ecdcff85;
+}
+.menu-list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+ //center the items vertically
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+    
+}
+.menu-list li {
+  display: inline;
+  font-size: 20px;
+    color: white;
+}
+.menu-icon, mat-icon {
+  color: #a900a9;
+  font-size: 24px;
+  background: transparent;
+}
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.menu-container {
+  width: 100vw;
+ 
+}
+.menu-container .mat-icon {
+  height: 24px;
+  font-size: 24px ;
+
+}

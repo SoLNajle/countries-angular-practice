@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { signal, Injectable } from '@angular/core';
 import { User } from '../models/user';
 
 @Injectable({
@@ -6,15 +6,17 @@ import { User } from '../models/user';
 })
 export class LoginService {
   private url = 'http://localhost:3000/users';
-  private isAuthenticated = false;
+  private isAuthenticated = signal(false);
+  readonly isAuthenticatedSignal = this.isAuthenticated.asReadonly();
 
   authenticate(email: string, password: string): Promise<boolean> {
     return this.getUserByEmail(email).then((user) => {
-      if (user) {
-        this.isAuthenticated = true;
+      console.log('User found:', user);
+      if (user?.password === password) {
+        this.isAuthenticated.set(true);
         return user.password === password;
       }
-      this.isAuthenticated = false;
+      this.isAuthenticated.set(false);
       return false;
     });
   }
@@ -39,11 +41,11 @@ export class LoginService {
   }
 
   setIsAuthenticated(value: boolean): void {
-    this.isAuthenticated = value;
+    this.isAuthenticated.set(value);
   }
 
   isAuthenticatedUser(): boolean {
-    return this.isAuthenticated;
+    return this.isAuthenticated();
   }
 
   logout(): void {

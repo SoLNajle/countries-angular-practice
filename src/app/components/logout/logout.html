@@ -1,3 +1,15 @@
 <div class="logout-container">
-  <button matButton (click)="logout()">Logout</button>
+  <button
+    mat-icon-button
+    class="logout"
+    aria-label="logout"
+    matTooltip="Logout"
+    (click)="logout()"
+  >
+    <mat-icon class="mat-icon">logout</mat-icon>
+  </button>
+  <!-- 
+  <button mat-icon-button (click)="logout()"
+    class="mdc-button mat-mdc-button-base mat-mdc-button mat-unthemed"><mat-icon
+      class="mat-icon">logout</mat-icon></button> -->
 </div>

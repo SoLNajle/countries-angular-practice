@@ -1,0 +1,16 @@
+<div class="menu-container" [hidden]="isAuthenticated()">
+  <mat-toolbar class="menu-toolbar">
+    <span class="menu-title">Countries I've visited App</span>
+    <span class="menu-spacer"></span>
+    <button
+      mat-icon-button
+      class="menu-icon menu-login"
+      aria-label="World Map"
+      matTooltip="World Map"
+      (click)="router.navigate(['/map'])"
+    >
+      <mat-icon>map</mat-icon>
+    </button>
+    <app-logout class="menu-icon menu-logout"></app-logout>
+  </mat-toolbar>
+</div>
