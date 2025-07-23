@@ -4,16 +4,17 @@ import { MapCapitalData } from '../models/map-capital-data';
 import { CountryService } from './country';
 import { STAY_DURATION_VALUE_MAP } from '../data/stay-duration-value-map';
 import { VisitedCountry } from '../models/visited-country';
+import { VISIT_AMOUNTS_VALUE_MAP } from '../data/visit-amounts-value-map';
 @Injectable({
   providedIn: 'root',
 })
 export class MapService {
   countryService = inject(CountryService);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getMapOptions(
     data_country: MapCountryData[],
     data_capital: MapCapitalData[],
-  ): any {
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  any {
     return {
       title: {
         text: 'Visited Countries Map',
@@ -107,19 +108,14 @@ export class MapService {
     };
   }
 
-  //need to format data for map
   async formatCountryForMap(
     data: VisitedCountry[],
   ): Promise<MapCountryData[] | null> {
-    // countryCode: "AX"id: 8 stayDuration: "justAirport"visitAmount: "1"
-    // find country name by code
     const mappedData = await Promise.all(
       data.map(async (item) => {
-        console.log('Mapping item:', item);
         const country = await this.countryService.getCountryByCode(
           item.countryCode,
         );
-        console.log('Country fetched:', country);
         return {
           name: country ? country.name : 'Unknown Country',
           value: STAY_DURATION_VALUE_MAP[item.stayDuration] || 0,
@@ -129,5 +125,27 @@ export class MapService {
     //removed unknown countries from mappedData
     mappedData.filter((item) => item.name !== 'Unknown Country');
     return mappedData;
+  }
+
+  async formatCapitalForMap(data: VisitedCountry[]): Promise<MapCapitalData[]> {
+    const mappedData = await Promise.all(
+      data.map(async (item) => {
+        const country = await this.countryService.getCountryWithCapital(
+          item.countryCode,
+        );
+        if (country && country.capital) {
+          return {
+            value: [
+              country.capital.longitude,
+              country.capital.latitude,
+              VISIT_AMOUNTS_VALUE_MAP[item.visitAmount] || 0,
+            ],
+          };
+        }
+        return null;
+      }),
+    );
+    // Filter out any nulls (countries not found)
+    return mappedData.filter((item): item is MapCapitalData => !!item);
   }
 }

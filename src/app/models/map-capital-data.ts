@@ -1,3 +1,3 @@
 export interface MapCapitalData {
-  value: number[];
+  value: [number, number, number];
 }

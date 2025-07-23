@@ -56,6 +56,10 @@ export class CountryMap implements OnInit {
       { value: [74.3587, 31.5204, 10] },
       { value: [-74.006, 40.7128, 3] },
     ];
+    this.data_capital =
+      (await this.mapService.formatCapitalForMap(this.visitedCountries)) ?? [];
+    console.log('Data for country map:', this.data_country);
+    console.log('Data for capital map:', this.data_capital);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.http.get('assets/world.json').subscribe((worldMap: any) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
