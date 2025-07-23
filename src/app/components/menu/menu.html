@@ -1,7 +1,7 @@
 <div class="menu-container" [hidden]="!isAuthenticated()">
   <mat-toolbar class="menu-toolbar">
     <span class="menu-title"></span>
-    <span class="menu-spacer"></span>
+
     <button
       mat-icon-button
       class="menu-icon menu-login"
@@ -11,6 +11,16 @@
     >
       <mat-icon>map</mat-icon>
     </button>
+    <button
+      mat-icon-button
+      class="menu-icon menu-country-form"
+      aria-label="Country Form"
+      matTooltip="Country Form"
+      (click)="router.navigate(['/country-form'])"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <span class="menu-spacer"></span>
     <app-logout class="menu-icon menu-logout"></app-logout>
   </mat-toolbar>
 </div>
