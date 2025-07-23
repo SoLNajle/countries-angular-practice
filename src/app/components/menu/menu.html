@@ -1,4 +1,4 @@
-<div class="menu-container" [hidden]="isAuthenticated()">
+<div class="menu-container" [hidden]="!isAuthenticated()">
   <mat-toolbar class="menu-toolbar">
     <span class="menu-title">Countries I've visited App</span>
     <span class="menu-spacer"></span>
