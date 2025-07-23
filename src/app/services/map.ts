@@ -149,13 +149,12 @@ export class MapService {
     return mappedData.filter((item): item is MapCapitalData => !!item);
   }
   getTooltipForCapital(param_value: number): string {
-    if (param_value === 0) {
-      return 'Not Visited';
-    }
-    if (param_value === 1) {
+    const oneVisit = 1;
+    if (param_value === oneVisit) {
       return '1 visit';
     }
-    if (param_value === 5) {
+    const fiveVisits = 5;
+    if (param_value === fiveVisits) {
       return 'lots of visits';
     }
     return `${param_value} visits`;
