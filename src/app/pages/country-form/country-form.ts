@@ -19,7 +19,6 @@ import { VisitedCountry } from '../../models/visited-country';
 import { CountryList } from '../../components/country-list/country-list';
 import { signal, OnInit } from '@angular/core';
 import { getDescription } from '../../utils/option-description.util';
-import { Logout } from '../../components/logout/logout';
 
 @Component({
   selector: 'app-country-form',
@@ -32,7 +31,6 @@ import { Logout } from '../../components/logout/logout';
     MatRadioModule,
     MatButtonModule,
     CountryList,
-    Logout,
   ],
   templateUrl: './country-form.html',
   styleUrl: './country-form.scss',

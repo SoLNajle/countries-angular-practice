@@ -1,12 +1,12 @@
 import { inject, Component } from '@angular/core';
-
+import { MatTooltip } from '@angular/material/tooltip';
 import { LoginService } from '../../services/login';
 import { Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-logout',
-  imports: [MatIcon],
+  imports: [MatIcon, MatTooltip],
   templateUrl: './logout.html',
   styleUrl: './logout.scss',
 })

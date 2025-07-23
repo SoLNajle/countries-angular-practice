@@ -1,29 +1,47 @@
-import { Component, Input, signal, Output, EventEmitter } from '@angular/core';
+import {
+  ViewChild,
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  AfterViewInit,
+} from '@angular/core';
 import { VisitedCountry } from '../../models/visited-country';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-country-list',
-  imports: [MatTableModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, MatButtonModule, MatIconModule, MatPaginatorModule],
   templateUrl: './country-list.html',
   styleUrl: './country-list.scss',
 })
-export class CountryList {
+export class CountryList implements OnChanges, AfterViewInit {
   @Input() countries: VisitedCountry[] = [];
+
   @Input() countryFormEditing = false;
-  // emit event when a country is deleted so country-form can update its state passing the countryId
   @Output() countryDeleted = new EventEmitter<number>();
-  // emit event when a country is edited so country-form can update its state
   @Output() countryEdited = new EventEmitter<number>();
-  VisitedCountries = signal<VisitedCountry[]>(this.countries);
+
   displayedColumns: string[] = [
     'country',
     'stayDuration',
     'visitAmount',
     'actionButtons',
   ];
+  dataSource = new MatTableDataSource<VisitedCountry>([]);
+
+  ngOnChanges() {
+    this.dataSource.data = this.countries;
+  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
   deleteCountry(countryId: number): void {
     console.log('Deleting country:', countryId);
