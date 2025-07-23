@@ -2,6 +2,18 @@
 
 To practice reactiveforms in Angular
 
+## Overview
+
+
+### Form
+
+![form](src/assets/form.png)
+
+### Map 
+
+
+![map](src/assets/map.png)
+
 ## Development server
 
 To start a local development server, run:
@@ -27,3 +39,12 @@ OR
 ``` 
 npm run start-all
 ```
+
+* Login information
+
+```bash
+email: a@a.com
+password: 1234
+```
+
+added to test auth-guard and permissions on the router
