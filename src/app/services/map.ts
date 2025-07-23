@@ -25,7 +25,7 @@ export class MapService {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formatter: (params: any) => {
           if (params.seriesType === 'effectScatter') {
-            return `${params.value[2]} ${params.value[2] > 1 ? 'visits' : 'visit'}`;
+            return this.getTooltipForCapital(params.value[2]);
           }
           return `${params.name}: ${params.value || 0}`;
         },
@@ -147,5 +147,17 @@ export class MapService {
     );
     // Filter out any nulls (countries not found)
     return mappedData.filter((item): item is MapCapitalData => !!item);
+  }
+  getTooltipForCapital(param_value: number): string {
+    if (param_value === 0) {
+      return 'Not Visited';
+    }
+    if (param_value === 1) {
+      return '1 visit';
+    }
+    if (param_value === 5) {
+      return 'lots of visits';
+    }
+    return `${param_value} visits`;
   }
 }
