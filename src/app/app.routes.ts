@@ -6,6 +6,7 @@ import { NotAuthorizedComponent } from './pages/not-authorized/not-authorized';
 import { CountryMap } from './pages/country-map/country-map';
 
 export const routes: Routes = [
+  { path: '', component: Login, title: 'Login' },
   { path: 'login', component: Login, title: 'Login' },
   {
     path: 'country-form',
