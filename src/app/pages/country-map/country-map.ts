@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { CountryService } from '../../services/country';
 import { EChartsOption } from 'echarts';
 import { provideEchartsCore, NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
@@ -8,16 +9,23 @@ import {
   TooltipComponent,
   VisualMapComponent,
   ToolboxComponent,
+  GeoComponent,
 } from 'echarts/components';
-import { MapChart } from 'echarts/charts';
+import { MapChart, EffectScatterChart } from 'echarts/charts';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MapService } from '../../services/map';
+import { MapCountryData } from '../../models/map-country-data';
+import { MapCapitalData } from '../../models/map-capital-data';
+import { VisitedCountry } from '../../models/visited-country';
 echarts.use([
   CanvasRenderer,
   TitleComponent,
   TooltipComponent,
   VisualMapComponent,
   ToolboxComponent,
+  GeoComponent,
   MapChart,
+  EffectScatterChart,
 ]);
 
 @Component({
@@ -29,69 +37,44 @@ echarts.use([
   styleUrls: ['./country-map.scss'],
 })
 export class CountryMap implements OnInit {
+  private countryService = inject(CountryService);
+  private mapService = inject(MapService);
   chartOption!: EChartsOption;
   private http = inject(HttpClient);
+  data_country: MapCountryData[] = [];
+  data_capital: MapCapitalData[] = [];
+  visitedCountries: VisitedCountry[] = [];
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.visitedCountries = this.countryService.getFromLocalStorage();
+    this.data_country =
+      (await this.mapService.formatCountryForMap(this.visitedCountries)) ?? [];
+
+    this.data_capital = [
+      { value: [-99.1332, 19.4326, 1] },
+      { value: [2.3522, 48.8566, 5] },
+      { value: [74.3587, 31.5204, 10] },
+      { value: [-74.006, 40.7128, 3] },
+    ];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.http.get('assets/world.json').subscribe((worldMap: any) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       echarts.registerMap('world', worldMap as any);
-      this.chartOption = {
-        title: {
-          text: 'Countries Visited',
-        },
-        tooltip: {
-          trigger: 'item',
-          showDelay: 0,
-          transitionDuration: 0.2,
-        },
-        visualMap: {
-          left: 'right',
-          min: 0,
-          max: 1,
-          inRange: {
-            color: ['#eeeeee', '#a50026'],
-          },
-          text: ['Visited'],
-          calculable: true,
-        },
-        toolbox: {
-          show: true,
-          //orient: 'vertical',
-          left: 'left',
-          top: 'top',
-          feature: {
-            dataView: { readOnly: false },
-            restore: {},
-            saveAsImage: {},
-          },
-        },
-        series: [
-          {
-            name: 'World Population',
-            type: 'map',
-            map: 'world',
-            roam: true,
-            label: {
-              show: false,
-            },
-            zoom: 1.0,
-            data: [
-              { name: 'China', value: 0 },
-              { name: 'India', value: 0 },
-              { name: 'United States', value: 1 },
-              { name: 'Indonesia', value: 1 },
-              { name: 'Pakistan', value: 0 },
-              { name: 'Brazil', value: 1 },
-              { name: 'Nigeria', value: 0 },
-              { name: 'Bangladesh', value: 0 },
-              { name: 'Russia', value: 0 },
-              { name: 'Mexico', value: 0 },
-            ],
-          },
-        ],
-      };
+
+      this.chartOption = this.mapService.getMapOptions(
+        this.data_country,
+        this.data_capital,
+      );
     });
+  }
+
+  getCountryWcapital(countryCode: string): void {
+    console.log('Fetching country with capital for code:', countryCode);
+    const visitedCountries = this.countryService.getFromLocalStorage();
+    console.log('Visited countries from local storage:', visitedCountries);
+    this.countryService.getCountryWithCapital(countryCode).then((country) => {
+      console.log('Country with capital:', country);
+    });
+    //get country information from lcoal storage
   }
 }

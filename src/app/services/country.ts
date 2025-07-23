@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Country } from '../models/country';
+import { Country, CountryWithCapital } from '../models/country';
 import { VisitedCountry } from '../models/visited-country';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CountryService {
-  private url = 'http://localhost:3000/countries';
+  private url_country = 'http://localhost:3000/countries';
+  private url_countries_capital = 'http://localhost:3000/countries_w_capital';
 
   getAllCountries(): Promise<Country[]> {
-    return fetch(this.url)
+    return fetch(this.url_country)
       .then((response) => response.json())
       .then((data) =>
         data.map((country: { name: string; code: string }) => ({
@@ -24,7 +25,7 @@ export class CountryService {
   }
 
   getCountryByCode(code: string): Promise<Country | null> {
-    return fetch(`${this.url}?code=${code}`)
+    return fetch(`${this.url_country}?code=${code}`)
       .then((response) => response.json())
       .then((countries) => (countries.length > 0 ? countries[0] : null))
       .catch((error) => {
@@ -40,5 +41,28 @@ export class CountryService {
   getFromLocalStorage(): VisitedCountry[] {
     const data = localStorage.getItem('visitedCountries');
     return data ? JSON.parse(data) : [];
+  }
+
+  getCountryWithCapital(
+    countryCode: string,
+  ): Promise<CountryWithCapital | null> {
+    return fetch(`${this.url_countries_capital}?code=${countryCode}`)
+      .then((response) => response.json())
+      .then((data) => (data.length > 0 ? data[0] : null))
+      .catch((error) => {
+        console.error('Error fetching country with capital:', error);
+        throw error;
+      });
+  }
+
+  getCountryNameByCode(code: string): string {
+    this.getCountryByCode(code).then((country) => {
+      if (country) {
+        return country.name;
+      } else {
+        return 'Unknown Country';
+      }
+    });
+    return 'Unknown Country'; // Default return value if the promise is not resolved
   }
 }
