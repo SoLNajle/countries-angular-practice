@@ -30,8 +30,9 @@ json-server --watch db/db.json --port 3000
 
 this will create these endpoints from [`db.json`](./db/db.json) file
 ```
-[1] http://localhost:3000/countries
-[1] http://localhost:3000/users
+http://localhost:3000/countries
+http://localhost:3000/users
+http://localhost:3000/countries_w_capital
 ```
 OR
 
