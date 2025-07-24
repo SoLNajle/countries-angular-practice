@@ -16,13 +16,27 @@ To practice reactiveforms in Angular
 
 ## Development server
 
+### Prerequisites
+
+Before running this project, make sure you have:
+- Node.js (version 16 or higher)
+- npm (comes with Node.js)
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Install dependencies 
+
+```bash
+npm install
+```
+### Run server
+
 To start a local development server, run:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Once the server is running, open your browser and navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload whenever you modify any of the source files.
 
 ```bash
 json-server --watch db/db.json --port 3000
